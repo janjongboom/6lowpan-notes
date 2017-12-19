@@ -61,9 +61,58 @@ A file downloads. Drag it to the BeeConn device - which mounts as USB mass-stora
 
 **Inspecting logs on the device**
 
-Connect a serial monitor to the device on baud rate 115,200.
+Connect a serial monitor to the device on baud rate 115,200. It should show something similar to:
 
+```
+[INFO][brro]: PANID: 691
+[INFO][brro]: NET_IPV6_BOOTSTRAP_AUTONOMOUS
+[WARN][brro]: Security NOT enabled
+[INFO][app ]: Starting NanoStack Border Router...
+[INFO][app ]: Build date: Dec 19 2017 12:06:27
+[INFO][app ]: Using ETH backhaul driver...
+[INFO][Eth ]: Ethernet cable connected.
+[INFO][addr]: Tentative Address added to IF 2: fe80::5843:4aff:fe2e:8a21
+[INFO][addr]: DAD passed on IF 2: fe80::5843:4aff:fe2e:8a21
+[INFO][addr]: Tentative Address added to IF 2: fd60:5ff5:15e3:0:5843:4aff:fe2e:8a21
+[INFO][addr]: DAD passed on IF 2: fd60:5ff5:15e3:0:5843:4aff:fe2e:8a21
+[INFO][brro]: Backhaul bootstrap ready, IPv6 = fd60:5ff5:15e3:0:5843:4aff:fe2e:8a21
+[INFO][brro]: Backhaul interface addresses:
+[INFO][brro]:    [0] fe80::5843:4aff:fe2e:8a21
+[INFO][brro]:    [1] fd60:5ff5:15e3:0:5843:4aff:fe2e:8a21
+[INFO][brro]: RF channel: 12
+[INFO][br  ]: BR nwk base ready for start
+[INFO][addr]: Address added to IF 1: fe80::ff:fe00:face
+[INFO][br  ]: Refresh Contexts
+[INFO][br  ]: Refresh Prefixs
+[INFO][addr]: Address added to IF 1: fd60:5ff5:15e3::ff:fe00:face
+[INFO][addr]: Address added to IF 1: fe80::fec2:3d00:3:7aef
+[INFO][brro]: RF bootstrap ready, IPv6 = fd60:5ff5:15e3::ff:fe00:face
+[INFO][brro]: RF interface addresses:
+[INFO][brro]:    [0] fe80::ff:fe00:face
+[INFO][brro]:    [1] fe80::fec2:3d00:3:7aef
+[INFO][brro]:    [2] fd60:5ff5:15e3::ff:fe00:face
+[INFO][brro]: 6LoWPAN Border Router Bootstrap Complete.
+```
 
+Now the border router is online.
+
+**Channel selection**
+
+Both device and gateway need to use the same channel. It's configured in `mbed_app.json`, see the `rf-channel` setting. Default setting is 12.
+
+## Connecting a device
+
+Multiple devices broadcast over the same network.
+
+* [mbed-os-example-mesh-minimal](https://github.com/ARMmbed/mbed-os-example-mesh-minimal).
+* [Video](img/6lowpan-two-devices-mesh.MOV) - using two different dev boards and two different radio chips.
+
+How to:
+
+1. Clone the example.
+2. Pick connectivity method in mbed_app.json.
+3. Select LED and BUTTON to control the LEDs over broadcast.
+4. Compile.
 
 **Drivers**
 
