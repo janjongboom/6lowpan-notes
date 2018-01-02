@@ -24,7 +24,7 @@ A list of targets that work are [here](https://github.com/ARMmbed/mbed-os-exampl
 
 **IPv6**
 
-The border router needs access to an IPv6 network to work (because 6LoWPAN is IPv6). If you don't have access to IPv6 network you can use a tunneling service, such as [Hurricane Electric](https://tunnelbroker.net) but it's out of scope for the article (I think).
+The border router needs access to an IPv6 network to work (because 6LoWPAN is IPv6). If you don't have access to IPv6 network you can use a tunneling service, such as [Hurricane Electric](https://tunnelbroker.net) but it's out of scope for the article (I think). **<-- I think this might actually be valuable information... But I don't have good resources.**
 
 **Software requirements**
 
@@ -121,3 +121,44 @@ How to:
 * ATMEL AT233 - https://github.com/ARMmbed/atmel-rf-driver/
 * SiLabs EFR32 - https://github.com/ARMmbed/mbed-os/tree/master/targets/TARGET_Silicon_Labs/TARGET_SL_RAIL/efr32-rf-driver (already included in Mbed OS).
 
+## Connecting to the internet
+
+HTTP and HTTPS calls over 6LoWPAN.
+
+* Import [http-example](https://os.mbed.com/teams/sandbox/code/http-example/).
+* Open `mbed_app.json`, change `network-interface` into `MESH_LOWPAN_ND`.
+* In `mbed_app.json`, also set your 6LoWPAN radio (under `mesh_radio_type`).
+* Open `source/select-demo.h` and select `DEMO_HTTP_IPV6`.
+* Compile and run the application. It will show something like:
+
+    ```
+    [EasyConnect] IPv6 mode
+    [EasyConnect] Using Mesh (Atmel)
+    [EasyConnect] Connecting to Mesh...
+    [EasyConnect] Connected to Network successfully
+    [EasyConnect] MAC address fc:c2:3d:00:00:04:e4:a3
+    [EasyConnect] IP address 2001:470:1d4c:1:fec2:3d00:4:e4a3
+
+    ----- HTTP GET response -----
+    Status: 200 - OK
+    Headers:
+            Server: nginx
+            Date: Tue, 02 Jan 2018 15:18:59 GMT
+            Content-Type: text/plain; charset=UTF-8
+            Content-Length: 33
+            Connection: close
+            X-SECURITY: This site DOES NOT distribute malware. Get the facts. https://goo.gl/1FhVpg
+            X-RTFM: Learn about this site at http://bit.ly/icanhazip-faq and do not abuse the service.
+            Access-Control-Allow-Origin: *
+            Access-Control-Allow-Methods: GET
+
+    Body (33 bytes):
+
+    2001:470:1d4c:1:fec2:3d00:4:e4a3
+    ```
+
+* The body contains the IPv6 address of your device.
+
+**Note:** Nanostack (the underlying IP stack for Mbed's mesh tech) does not support IPv4. Only IPv6.
+
+mbed-http also supports HTTPS. See demo-https.cpp for more information. You need to add the CA to the list of trusted CAs.
